@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bike Trip Planner</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
+<header>
+    <h1>🏍️ AI Bike Trip Planner</h1>
+    <p>Discover beautiful places for your next ride!</p>
+</header>
+
+<main>
+    <section class="search-box">
+        <h2>Find Tourist Places</h2>
+
+        <form method="POST">dir
+            <label for="location">Starting Location / City</label>
+            <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="Example: Madurai"
+                value="{{ location }}"
+                required
+            >
+
+            <label for="distance">Maximum Distance (KM)</label>
+            <select id="distance" name="distance">
+                <option value="10" {% if distance == 10 %}selected{% endif %}>10 KM</option>
+                <option value="30" {% if distance == 30 %}selected{% endif %}>30 KM</option>
+                <option value="50" {% if distance == 50 %}selected{% endif %}>50 KM</option>
+                <option value="100" {% if distance == 100 %}selected{% endif %}>100 KM</option>
+            </select>
+
+            <button type="submit">🔍 Find Places</button>
+        </form>
+    </section>
+
+    {% if searched %}
+        <h2 class="result-title">
+            📍 Tourist Places near {{ location }}
+        </h2>
+
+        {% if places %}
+            <section class="places-grid">
+                {% for place in places %}
+                    <article class="place-card">
+                        <img
+                            src="{{ place.image }}"
+                            alt="{{ place.name }}"
+                            onerror="this.style.display='none'"
+                        >
+
+                        <div class="place-info">
+                            <span class="category">
+                                {{ place.category }}
+                            </span>
+
+                            <h3>{{ place.name }}</h3>
+                            <p>📍 Location: {{ place.city }}</p>
+                            <p>🛣️ Sample distance: {{ place.distance }} KM</p>
+
+                            <a href="{{ place.map_url }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                🗺️ View Route in Google Maps
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </section>
+        {% else %}
+            <p class="no-results">
+                No places found. Try Madurai, Chennai, Ooty
+                or Coimbatore.
+            </p>
+        {% endif %}
+    {% endif %}
+</main>
+
+<footer>
+    <p>🏍️ Plan Your Ride | Explore New Places</p>
+</footer>
+
+</body>
+              </html>
